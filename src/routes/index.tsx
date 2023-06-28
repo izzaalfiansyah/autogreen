@@ -31,7 +31,7 @@ export default component$(() => {
           },
           gg(go.TextBlock, {
             margin: 5,
-            stroke: "black",
+
             font: "12px Poppins",
           }).bind("text", "tooltip")
         ),
@@ -55,14 +55,12 @@ export default component$(() => {
 
     diagram.toolManager.hoverDelay = 100;
 
-    diagram.linkTemplate = new go.Link({
-      routing: go.Link.Default,
-      corner: 3,
-    })
-      .add(gg(go.Shape, { strokeWidth: 1.5, stroke: "darkgray" }))
-      .add(
-        gg(go.Shape, { toArrow: "Standard", fill: "darkgray", stroke: null })
-      );
+    diagram.linkTemplate = gg(
+      go.Link,
+      { routing: go.Link.Orthogonal, curve: go.Link.Bezier }, // Bezier curve
+      gg(go.Shape, {}),
+      gg(go.Shape, { toArrow: "Standard", fill: null })
+    );
 
     diagram.model = new go.GraphLinksModel(
       [
