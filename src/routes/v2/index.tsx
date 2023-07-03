@@ -1,48 +1,30 @@
 import {
   $,
+  type NoSerialize,
   component$,
   noSerialize,
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
 import "gridstack/dist/gridstack.min.css";
-import { GridItemHTMLElement, GridStack, Utils } from "gridstack";
+import { type GridItemHTMLElement, GridStack, Utils } from "gridstack";
+import LeaderLine from "leader-line-new";
+import { nodes } from "~/components/sample";
+import component from "~/components/component";
 
 export default component$(() => {
   const state = useStore<{
-    grid: any;
+    grid: NoSerialize<GridStack>;
+    line: NoSerialize<LeaderLine>;
   }>({
-    grid: null,
+    grid: null as any,
+    line: null as any,
   });
 
-  const components = [
-    {
-      name: "Tandon",
-      image: "https://cdn-icons-png.flaticon.com/512/2399/2399504.png",
-    },
-    {
-      name: "Pompa",
-      image: "https://cdn-icons-png.flaticon.com/512/2226/2226103.png",
-    },
-    {
-      name: "Katup",
-      image: "https://cdn-icons-png.flaticon.com/512/148/148298.png",
-    },
-    {
-      name: "Sensor",
-      image: "https://cdn-icons-png.flaticon.com/512/6375/6375838.png",
-    },
-  ];
-
   const gridSave = $(() => {
-    const data = state.grid.save();
+    const data = state.grid?.save() as Array<any>;
 
-    const newData = data.map((item: any, i: number) => {
-      item["id"] = i + 1;
-      return item;
-    });
-
-    const text = JSON.stringify(newData);
+    const text = JSON.stringify(data);
     navigator.clipboard.writeText(text);
   });
 
@@ -52,58 +34,14 @@ export default component$(() => {
       acceptWidgets: true,
       removable: "#trash",
       disableResize: true,
+      column: 12,
     });
 
-    grid.load([
-      {
-        w: 3,
-        x: 9,
-        y: 0,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Sensor</div></div>',
-        id: "1",
-      },
-      {
-        w: 3,
-        x: 4,
-        y: 1,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Pompa</div></div>',
-        id: "2",
-      },
-      {
-        w: 3,
-        x: 0,
-        y: 2,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Tandon</div></div>',
-        id: "3",
-      },
-      {
-        w: 3,
-        x: 8,
-        y: 2,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Katup</div></div>',
-        id: "4",
-      },
-      {
-        w: 3,
-        x: 4,
-        y: 3,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Pompa</div></div>',
-        id: "5",
-      },
-      {
-        w: 3,
-        x: 8,
-        y: 4,
-        content:
-          '<div class="bg-white shadow rounded flex w-[220px] items-center p-3" data-qwik-inspector="routes/v2/index.tsx:74:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup" data-qwik-inspector="routes/v2/index.tsx:75:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:81:23">Katup</div></div>',
-        id: "6",
-      },
-    ]);
+    grid.load(nodes);
+
+    grid.on("added removec change", function () {
+      state.line?.position();
+    });
 
     state.grid = noSerialize(grid);
 
@@ -118,6 +56,16 @@ export default component$(() => {
         return clone;
       },
     });
+
+    const line = new LeaderLine(
+      document.querySelector("[gs-id='1688369691777']") as any,
+      document.querySelector("[gs-id='1688369699702']") as any
+    );
+
+    line.color = "#111b21";
+    line.size = 1.5;
+
+    state.line = noSerialize(line);
   });
 
   return (
@@ -132,7 +80,7 @@ export default component$(() => {
             >
               Simpan
             </button>
-            {components.map((item, i) => (
+            {component.map((item, i) => (
               <div class="mb-4" key={i}>
                 <div class="grid-stack-item node-component">
                   <div class="grid-stack-item-content">

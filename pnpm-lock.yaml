@@ -12,6 +12,7 @@ specifiers:
   eslint-plugin-qwik: ^1.1.5
   gojs: ^2.3.8
   gridstack: ^8.3.0
+  leader-line-new: ^1.1.9
   postcss: ^8.4.23
   prettier: 2.8.8
   tailwindcss: ^3.3.1
@@ -23,6 +24,7 @@ specifiers:
 dependencies:
   gojs: 2.3.8
   gridstack: 8.3.0
+  leader-line-new: 1.1.9
 
 devDependencies:
   '@builder.io/qwik': 1.1.5_undici@5.22.1
@@ -1694,6 +1696,10 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /leader-line-new/1.1.9:
+    resolution: {integrity: sha512-x56aRYaqJTA4aAS2fgbSpvWKY3IxRXDSFeGkNBmCQ3LX44B3F1HEjcBTkCiK5I3W0nPWeUTWe7dTt59VtdfFWw==}
+    dev: false
 
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
