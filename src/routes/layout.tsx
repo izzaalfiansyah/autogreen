@@ -6,7 +6,7 @@ export default component$(() => {
 
   return (
     <div class="min-h-screen bg-gray-50 flex flex-col">
-      <div class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0">
+      <div class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]">
         <div>
           <span class="font-semibold text-lg">
             <span class="text-green-500">AI </span>Green

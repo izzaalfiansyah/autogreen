@@ -39,6 +39,7 @@
     "vite-tsconfig-paths": "4.2.0"
   },
   "dependencies": {
-    "gojs": "^2.3.8"
+    "gojs": "^2.3.8",
+    "gridstack": "^8.3.0"
   }
 }
