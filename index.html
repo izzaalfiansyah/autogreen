@@ -18,159 +18,128 @@
     <script src="node_modules/leader-line-new/leader-line.min.js"></script>
   </head>
   <body>
-    <div
-      class="min-h-screen bg-gray-50 flex flex-col"
-      x-data="{
-        components: [
-        {
-          name: 'Tandon',
-          image: 'https://cdn-icons-png.flaticon.com/512/2399/2399504.png',
-        },
-        {
-          name: 'Pompa',
-          image: 'https://cdn-icons-png.flaticon.com/512/2226/2226103.png',
-        },
-        {
-          name: 'Katup',
-          image: 'https://cdn-icons-png.flaticon.com/512/148/148298.png',
-        },
-        {
-          name: 'Sensor',
-          image: 'https://cdn-icons-png.flaticon.com/512/6375/6375838.png',
-        },
-      ]
-    }"
-    >
+    <div id="app" 
+    x-data="state">
       <div
-        class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]"
+        class="min-h-screen bg-gray-50 flex flex-col"
       >
-        <div>
-          <span class="font-semibold text-lg">
-            <span class="text-green-500">AI </span>Green
-          </span>
+        <div
+          class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]"
+        >
+          <div>
+            <span class="font-semibold text-lg">
+              <span class="text-green-500">AI </span>Green
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="grow diagram flex flex-col">
-        <div class="p-5 relative">
-          <div class="flex">
-            <div class="w-auto">
-              <div class="bg-white rounded-lg shadow h-full p-5">
-                <button
-                  type="button"
-                  class="bg-green-500 mb-10 w-full text-white px-4 p-3 rounded shadow"
-                  x-on:click="save"
-                >
-                  Simpan
-                </button>
-                <template x-for="item in components">
-                  <div class="mb-4">
-                    <div class="grid-stack-item node-component">
-                      <div class="grid-stack-item-content">
-                        <div
-                          class="bg-white shadow rounded flex w-[220px] items-center drag-component"
-                        >
-                          <img
-                            x-bind:src="item.image"
-                            x-bind:alt="item.name"
-                            width="35"
-                            height="35"
-                            class="m-3"
-                          />
+        <div class="grow diagram flex flex-col">
+          <div class="p-5 relative">
+            <div class="flex">
+              <div class="w-auto">
+                <div class="bg-white rounded-lg shadow h-full p-5">
+                  <button
+                    type="button"
+                    class="bg-green-500 mb-10 w-full text-white px-4 p-3 rounded shadow"
+                    x-on:click="save"
+                  >
+                    Simpan
+                  </button>
+                  <template x-for="item in components">
+                    <div class="mb-4">
+                      <div class="grid-stack-item node-component">
+                        <div class="grid-stack-item-content">
                           <div
-                            class="grow flex-1 pl-4"
-                            x-html="item.name"
-                          ></div>
+                            class="bg-white shadow rounded flex w-[220px] items-center drag-component" x-on:click="$event.preventDefault()"
+                          >
+                            <img
+                              x-bind:src="item.image"
+                              x-bind:alt="item.name"
+                              width="35"
+                              height="35"
+                              class="m-3"
+                            />
+                            <div
+                              class="grow flex-1 pl-4"
+                              x-html="item.name"
+                            ></div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </template>
-                <div
-                  class="bg-red-100 border border-red-500 flex items-center justify-center h-20 w-[220px] rounded-lg shadow mt-10 space-x-1"
-                  id="trash"
-                >
-                  <span class="text-red-500">Drop ke sini</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-5 h-5 text-red-500"
+                  </template>
+                  <div
+                    class="bg-red-100 border border-red-500 flex items-center justify-center h-20 w-[220px] rounded-lg shadow mt-10 space-x-1"
+                    id="trash"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    />
-                  </svg>
+                    <span class="text-red-500">Drop ke sini</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5 text-red-500"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="grow flex-1 px-5 min-h-screen">
-              <div
-                class="grid-stack rounded-lg bg-opacity-50 min-h-screen"
-              ></div>
+              <div class="grow flex-1 px-5 min-h-screen">
+                <div
+                  class="grid-stack rounded-lg bg-opacity-50 min-h-screen"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]">
-      <div class="bg-green-500 p-3 rounded-lg shadow z-20 w-[600px] text-white" id="notifikasi">Berhasil</div>
-    </div>
-    <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]">
-      <div class="bg-red-500 p-3 rounded-lg shadow z-20 w-[600px] text-white" id="notifikasi-error">Terjadi kesalahan</div>
+      <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]" x-bind:class="notifikasi.show ? '!translate-y-0' : ''">
+        <div x-bind:class="notifikasi.success ? 'bg-green-500' : 'bg-red-500'" class="p-3 rounded-lg shadow z-20 w-[600px] text-white" x-html="notifikasi.message">Berhasil</div>
+      </div>
+      <div class="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-25 z-[900] flex items-center justify-center p-5" x-bind:class="modalOpen ? '' : 'hidden'">
+        <div class="absolute top-0 bottom-0 left-0 right-0" x-on:click="modalOpen = false"></div>
+        <div class="bg-white p-5 rounded-lg w-2/5 relative">
+          <div class="text-lg mb-5 pb-3 border-b">Detail Perangkat</div>
+          <div class="mb-2">
+            <label for="">ID Perangkat</label>
+            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100" disabled>
+          </div>
+          <div class="mb-2">
+            <label for="">Nama Perangkat</label>
+            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+          </div>
+          <div class="mb-2">
+            <label for="">Status</label>
+            <select type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+              <option value="1">Running</option>
+              <option value="0">Stopped</option>
+            </select> 
+          </div>
+          <div class="mb-2">
+            <label for="">Flow</label>
+            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+          </div>
+          <div class="mb-2">
+            <label for="">Temperatur</label>
+            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+          </div>
+          <div class="mt-5">
+            <button class="border rounded outline-none px-4 p-2 bg-green-500 text-white">Simpan</button>
+            <button class="border rounded outline-none border-gray-200 px-4 p-2 bg-gray-100" x-on:click="modalOpen = false">Tutup</button>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
-      var grid = {},
-        lines = [];
-
+      window.grid = {};
+      window.lines = [];
       const data = {
-        grid: [
-          {
-            w: 3,
-            x: 9,
-            y: 0,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" data-qwik-inspector="routes/v2/index.tsx:92:21"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor" class="m-3" data-qwik-inspector="routes/v2/index.tsx:93:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:100:23">Sensor</div></div>',
-          },
-          {
-            w: 3,
-            x: 4,
-            y: 1,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
-          },
-          {
-            w: 3,
-            x: 0,
-            y: 2,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369691777"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Tandon</div></div>',
-          },
-          {
-            w: 3,
-            x: 8,
-            y: 2,
-            content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
-          },
-          {
-            w: 3,
-            x: 4,
-            y: 3,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" data-qwik-inspector="routes/v2/index.tsx:87:21" gs-id="1688375280896"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:88:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:95:23">Pompa</div></div>',
-          },
-          {
-            w: 3,
-            x: 8,
-            y: 4,
-            content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
-          },
-        ],
+        grid: [{"w":3,"x":9,"y":0,"content":"\n                          <div class=\"bg-white shadow rounded flex w-[220px] items-center drag-component\" gs-id=\"1688532130825\" x-on:click=\"showDetail\">\n                            <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/6375/6375838.png\" alt=\"Sensor\">\n                            <div class=\"grow flex-1 pl-4\">Sensor</div>\n                          </div>\n                        "},{"w":3,"x":4,"y":1,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:140:21\" gs-id=\"1688369699702\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2226/2226103.png\" alt=\"Pompa\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:141:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:148:23\">Pompa</div></div>"},{"w":3,"x":0,"y":2,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:140:21\" gs-id=\"1688369691777\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2399/2399504.png\" alt=\"Tandon\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:141:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:148:23\">Tandon</div></div>"},{"w":3,"x":8,"y":2,"content":"\n                        <div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" gs-id=\"1688526459262\">\n                          <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/148/148298.png\" alt=\"Katup\">\n                          <div class=\"grow flex-1 pl-4\">Katup</div>\n                        </div>\n                      "},{"w":3,"x":4,"y":3,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:87:21\" gs-id=\"1688375280896\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2226/2226103.png\" alt=\"Pompa\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:88:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:95:23\">Pompa</div></div>"},{"w":3,"x":0,"y":4},{"w":3,"x":8,"y":4,"content":"\n                        <div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" gs-id=\"1688526568795\">\n                          <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/148/148298.png\" alt=\"Katup\">\n                          <div class=\"grow flex-1 pl-4\">Katup</div>\n                        </div>\n                      "}],
         line: [
           {
             from: "1688369691777",
@@ -195,54 +164,74 @@
         ],
       };
 
-      function init() {
-        grid = GridStack.init({
-          float: true,
-          acceptWidgets: true,
-          removable: "#trash",
-          disableResize: true,
-          column: 12,
-        });
-
-        grid.load(data.grid);
-
-        grid.on("added remove change", function () {
-          lines.forEach((item) => {
-            item.position();
-          });
-        });
-
-        GridStack.setupDragIn(".node-component", {
-          appendTo: "body",
-          helper: (event) => {
-            const id = Date.now();
-            let target = event.target.parentElement;
-
-            if (target.classList.contains("grid-stack-item-content")) {
-              target = target.children[0];
-            }
-
-            target.setAttribute("gs-id", id);
-
-            target.children[0].removeAttribute("x-bind:src");
-            target.children[0].removeAttribute("x-bind:alt");
-            target.children[1].removeAttribute("x-html");
-
-            const clone = target.cloneNode(true);
-            return clone;
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('state', () => ({
+          components: [
+            {
+              name: 'Tandon',
+              image: 'https://cdn-icons-png.flaticon.com/512/2399/2399504.png',
+            },
+            {
+              name: 'Pompa',
+              image: 'https://cdn-icons-png.flaticon.com/512/2226/2226103.png',
+            },
+            {
+              name: 'Katup',
+              image: 'https://cdn-icons-png.flaticon.com/512/148/148298.png',
+            },
+            {
+              name: 'Sensor',
+              image: 'https://cdn-icons-png.flaticon.com/512/6375/6375838.png',
+            },
+          ],
+          modalOpen: false,
+          notifikasi: {
+            message: 'Berhasil',
+            success: true,
+            show: false,
           },
+          save() {
+            const data = grid.save();
+
+            const text = JSON.stringify(data);
+            navigator.clipboard.writeText(text);
+
+            this.notif('Perubahan berhasil disimpan')
+          },
+          showDetail(e) {
+            console.log(e.currentTarget);
+            this.modalOpen = true;
+          },
+          notif(message, success = true) {
+            this.notifikasi.message = message;
+            this.notifikasi.success = true;
+            this.notifikasi.show = true;
+            setTimeout(() => {
+              this.notifikasi.show = false;
+            }, 3000);
+          }
+        }))
+      })
+
+      window.grid = GridStack.init({
+        float: true,
+        acceptWidgets: true,
+        removable: "#trash",
+        disableResize: true,
+        column: 12,
+      });
+
+      window.grid.load(data.grid);
+      
+      window.grid.on("added remove change", function () {
+        window.lines.forEach((item) => {
+          item.position();
         });
+      });
 
-        initLine();
-      }
-
-      document.addEventListener("DOMContentLoaded", init);
-
-      function initLine() {
-        data.line.forEach((item) => {
-          makeLine(item);
-        });
-      }
+      data.line.forEach((item) => {
+        makeLine(item);
+      });
 
       function makeLine({ from, to }) {
         line = new LeaderLine(
@@ -254,40 +243,43 @@
           }
         );
 
-        lines.push(line);
+        window.lines.push(line);
 
-        lines.forEach((item, index) => {
+        window.lines.forEach((item, index) => {
           const el = document.querySelectorAll('.leader-line')[index];
           el.setAttribute('l-id', item._id);
           el.setAttribute('l-index', index);
           el.addEventListener('click', () => {
             const lId = el.getAttribute('l-index');
-            delete lines[lId];
+            delete window.lines[lId];
             el.remove();
           })
         })
       }
 
-      function save(e) {
-        e.preventDefault();
-
-        const data = grid.save();
-
-        const text = JSON.stringify(data);
-        navigator.clipboard.writeText(text);
-
-        notif('Perubahan berhasil disimpan')
-      }
-      
-      function notif(message, success = true) {
-        const notifikasi = document.querySelector(success ? '#notifikasi' : '#notifikasi-error');
-        notifikasi.innerHTML = message;
-
-        notifikasi.parentElement.classList.add('!translate-y-0');
-        setTimeout(() => {
-          notifikasi.parentElement.classList.remove('!translate-y-0');
-        }, 3000);
-      }
+      setTimeout(() => {
+        GridStack.setupDragIn(".node-component", {
+          appendTo: "body",
+          helper: (event) => {
+            const id = Date.now();
+            let target = event.target.parentElement;
+  
+            if (target.classList.contains("grid-stack-item-content")) {
+              target = target.children[0];
+            }
+  
+            target.setAttribute("gs-id", id);
+            target.setAttribute('x-on:click', 'showDetail');
+  
+            target.children[0].removeAttribute("x-bind:src");
+            target.children[0].removeAttribute("x-bind:alt");
+            target.children[1].removeAttribute("x-html");
+  
+            const clone = target.cloneNode(true);
+            return clone;
+          },
+        });
+      }, 400);
     </script>
   </body>
 </html>
