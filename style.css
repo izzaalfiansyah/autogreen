@@ -11,3 +11,20 @@
   background-image: radial-gradient(lightgray 1px, transparent 0);
   background-size: 30px 30px;
 }
+
+.grid-stack-item-content {
+  cursor: grab;
+}
+
+svg.leader-line {
+  pointer-events: auto!important;
+}
+
+.leader-line {
+  z-index: 400 !important;
+  cursor: no-drop !important;
+}
+
+.leader-line:hover g > use:first-of-type {
+  stroke: yellow !important;
+}

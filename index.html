@@ -67,7 +67,7 @@
                     <div class="grid-stack-item node-component">
                       <div class="grid-stack-item-content">
                         <div
-                          class="bg-white shadow rounded flex w-[220px] items-center"
+                          class="bg-white shadow rounded flex w-[220px] items-center drag-component"
                         >
                           <img
                             x-bind:src="item.image"
@@ -210,7 +210,6 @@
           appendTo: "body",
           helper: (event) => {
             const id = Date.now();
-            console.log(id);
             let target = event.target.parentElement;
 
             if (target.classList.contains("grid-stack-item-content")) {
@@ -242,11 +241,14 @@
       function makeLine({ from, to }) {
         line = new LeaderLine(
           document.querySelector(`[gs-id='${from}']`),
-          document.querySelector(`[gs-id='${to}']`)
+          document.querySelector(`[gs-id='${to}']`),
+          {
+            color: "#111b21",
+            size: 1.5,
+          }
         );
 
-        line.color = "#111b21";
-        line.size = 1.5;
+        console.log(line);
 
         lines.push(line);
       }
