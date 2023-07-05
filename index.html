@@ -116,6 +116,12 @@
         </div>
       </div>
     </div>
+    <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]">
+      <div class="bg-green-500 p-3 rounded-lg shadow z-20 w-[600px] text-white" id="notifikasi">Berhasil</div>
+    </div>
+    <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]">
+      <div class="bg-red-500 p-3 rounded-lg shadow z-20 w-[600px] text-white" id="notifikasi-error">Terjadi kesalahan</div>
+    </div>
     <script>
       var grid = {},
         lines = [];
@@ -248,9 +254,18 @@
           }
         );
 
-        console.log(line);
-
         lines.push(line);
+
+        lines.forEach((item, index) => {
+          const el = document.querySelectorAll('.leader-line')[index];
+          el.setAttribute('l-id', item._id);
+          el.setAttribute('l-index', index);
+          el.addEventListener('click', () => {
+            const lId = el.getAttribute('l-index');
+            delete lines[lId];
+            el.remove();
+          })
+        })
       }
 
       function save(e) {
@@ -261,7 +276,17 @@
         const text = JSON.stringify(data);
         navigator.clipboard.writeText(text);
 
-        alert("Berhasil disimpan");
+        notif('Perubahan berhasil disimpan')
+      }
+      
+      function notif(message, success = true) {
+        const notifikasi = document.querySelector(success ? '#notifikasi' : '#notifikasi-error');
+        notifikasi.innerHTML = message;
+
+        notifikasi.parentElement.classList.add('!translate-y-0');
+        setTimeout(() => {
+          notifikasi.parentElement.classList.remove('!translate-y-0');
+        }, 3000);
       }
     </script>
   </body>

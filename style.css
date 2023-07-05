@@ -13,7 +13,7 @@
 }
 
 .grid-stack-item-content {
-  cursor: grab;
+  cursor: pointer;
 }
 
 svg.leader-line {
@@ -27,4 +27,8 @@ svg.leader-line {
 
 .leader-line:hover g > use:first-of-type {
   stroke: yellow !important;
+}
+
+.grid-stack .grid-stack-item-content:hover > * {
+  background: lightyellow;
 }
