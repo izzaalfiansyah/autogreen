@@ -37,7 +37,7 @@
         </div>
         <div class="grow diagram flex flex-col">
           <div class="p-5 relative">
-            <div class="flex sticky">
+            <div class="flex">
               <div class="w-auto">
                 <div class="bg-white rounded-lg shadow p-5 sticky top-[100px]">
                   <template x-for="(item, index) in components">
@@ -320,7 +320,7 @@
 
             const data = {
               grid: data_grid,
-              line: data_line.filter((item) => item != null),
+              line: data_line,
             };
 
             const text = JSON.stringify(data);
@@ -370,6 +370,7 @@
                 window.lineTargetBefore = target;
                 window.lineBefore = new LeaderLine(target, component, {
                   size: 2,
+                  color: "gold",
                 });
               }
             }
@@ -420,16 +421,24 @@
 
         window.lines.forEach((item, index) => {
           const el = document.querySelectorAll(".leader-line")[index];
-          el.setAttribute("l-id", item._id);
-          el.setAttribute("l-index", index);
-          el.addEventListener("click", () => {
-            const lId = el.getAttribute("l-index");
 
-            delete window.lines[lId];
-            delete window.data_line[lId];
+          if (el) {
+            el.setAttribute("l-id", item._id);
+            el.setAttribute("l-index", index);
+            el.addEventListener("click", () => {
+              const lId = el.getAttribute("l-index");
 
-            el.remove();
-          });
+              delete window.lines[lId];
+              delete window.data_line[lId];
+
+              window.lines = window.lines.filter((item) => item != null);
+              window.data_line = window.data_line.filter(
+                (item) => item != null
+              );
+
+              el.remove();
+            });
+          }
         });
       }
 
