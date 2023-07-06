@@ -3,54 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Green</title>
+    <title>Sistem Monitoring IntelliGreenhouse</title>
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
       href="node_modules/gridstack/dist/gridstack.min.css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      defer
-      src="node_modules/alpinejs/dist/cdn.min.js"
-    ></script>
+    <script defer src="node_modules/alpinejs/dist/cdn.min.js"></script>
     <script src="node_modules/gridstack/dist/gridstack-all.js"></script>
     <script src="node_modules/leader-line-new/leader-line.min.js"></script>
     <script src="node_modules/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <div id="app" 
-    x-data="state">
-      <div
-        class="min-h-screen bg-gray-50 flex flex-col"
-      >
+    <div id="app" x-data="state">
+      <div class="min-h-screen bg-gray-50 flex flex-col">
         <div
           class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]"
         >
           <div>
             <span class="font-semibold text-lg">
-              <span class="text-green-500">AI </span>Green
+              <span class="text-green-500">Intelli</span>Greenhouse
             </span>
           </div>
+
+          <button
+            type="button"
+            class="bg-green-500 text-white px-8 p-3 rounded shadow"
+            x-on:click="await save"
+          >
+            Simpan
+          </button>
         </div>
         <div class="grow diagram flex flex-col">
           <div class="p-5 relative">
             <div class="flex">
               <div class="w-auto">
                 <div class="bg-white rounded-lg shadow h-full p-5">
-                  <button
-                    type="button"
-                    class="bg-green-500 mb-10 w-full text-white px-4 p-3 rounded shadow"
-                    x-on:click="save"
-                  >
-                    Simpan
-                  </button>
                   <template x-for="item in components">
                     <div class="mb-4">
                       <div class="grid-stack-item node-component">
                         <div class="grid-stack-item-content">
                           <div
-                            class="bg-white shadow rounded flex w-[220px] items-center drag-component" x-on:click="$event.preventDefault()"
+                            class="bg-white shadow rounded flex w-[220px] items-center drag-component"
+                            x-on:click="$event.preventDefault()"
                           >
                             <img
                               x-bind:src="item.image"
@@ -99,39 +95,79 @@
           </div>
         </div>
       </div>
-      <div class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]" x-bind:class="notifikasi.show ? '!translate-y-0' : ''">
-        <div x-bind:class="notifikasi.success ? 'bg-green-500' : 'bg-red-500'" class="p-3 rounded-lg shadow z-20 w-[600px] text-white" x-html="notifikasi.message">Berhasil</div>
+      <div
+        class="fixed bottom-10 flex justify-center left-0 right-0 transition duration-[.5s] transform translate-y-[200%]"
+        x-bind:class="notifikasi.show ? '!translate-y-0' : ''"
+      >
+        <div
+          x-bind:class="notifikasi.success ? 'bg-green-500' : 'bg-red-500'"
+          class="p-3 rounded-lg shadow z-20 w-[600px] text-white"
+          x-html="notifikasi.message"
+        >
+          Berhasil
+        </div>
       </div>
-      <div class="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-25 z-[900] flex items-center justify-center p-5" x-bind:class="modalOpen ? '' : 'hidden'">
-        <div class="absolute top-0 bottom-0 left-0 right-0" x-on:click="modalOpen = false"></div>
+      <div
+        class="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-25 z-[900] flex items-center justify-center p-5"
+        x-bind:class="modalOpen ? '' : 'hidden'"
+      >
+        <div
+          class="absolute top-0 bottom-0 left-0 right-0"
+          x-on:click="modalOpen = false"
+        ></div>
         <div class="bg-white p-5 rounded-lg w-2/5 relative">
           <div class="text-lg mb-5 pb-3 border-b">Detail Perangkat</div>
           <div class="mb-2">
             <label for="">ID Perangkat</label>
-            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100" disabled>
+            <input
+              type="text"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              disabled
+            />
           </div>
           <div class="mb-2">
             <label for="">Nama Perangkat</label>
-            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+            <input
+              type="text"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+            />
           </div>
           <div class="mb-2">
             <label for="">Status</label>
-            <select type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+            <select
+              type="text"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+            >
               <option value="1">Running</option>
               <option value="0">Stopped</option>
-            </select> 
+            </select>
           </div>
           <div class="mb-2">
             <label for="">Flow</label>
-            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+            <input
+              type="text"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+            />
           </div>
           <div class="mb-2">
             <label for="">Temperatur</label>
-            <input type="text" class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100">
+            <input
+              type="text"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+            />
           </div>
           <div class="mt-5">
-            <button class="border rounded outline-none px-4 p-2 bg-green-500 text-white">Simpan</button>
-            <button class="border rounded outline-none border-gray-200 px-4 p-2 bg-gray-100" x-on:click="modalOpen = false">Tutup</button>
+            <button
+              class="border rounded outline-none px-4 p-2 bg-green-500 text-white"
+            >
+              Simpan
+            </button>
+            <button
+              class="border rounded outline-none border-gray-200 px-4 p-2 bg-gray-100"
+              x-on:click="modalOpen = false"
+            >
+              Tutup
+            </button>
           </div>
         </div>
       </div>
@@ -139,8 +175,54 @@
     <script>
       window.grid = {};
       window.lines = [];
+      window.apiURL =
+        "https://aigreen-default-rtdb.asia-southeast1.firebasedatabase.app";
       const data = {
-        grid: [{"w":3,"x":9,"y":0,"content":"\n                          <div class=\"bg-white shadow rounded flex w-[220px] items-center drag-component\" gs-id=\"1688532130825\" x-on:click=\"showDetail\">\n                            <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/6375/6375838.png\" alt=\"Sensor\">\n                            <div class=\"grow flex-1 pl-4\">Sensor</div>\n                          </div>\n                        "},{"w":3,"x":4,"y":1,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:140:21\" gs-id=\"1688369699702\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2226/2226103.png\" alt=\"Pompa\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:141:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:148:23\">Pompa</div></div>"},{"w":3,"x":0,"y":2,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:140:21\" gs-id=\"1688369691777\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2399/2399504.png\" alt=\"Tandon\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:141:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:148:23\">Tandon</div></div>"},{"w":3,"x":8,"y":2,"content":"\n                        <div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" gs-id=\"1688526459262\">\n                          <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/148/148298.png\" alt=\"Katup\">\n                          <div class=\"grow flex-1 pl-4\">Katup</div>\n                        </div>\n                      "},{"w":3,"x":4,"y":3,"content":"<div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" data-qwik-inspector=\"routes/v2/index.tsx:87:21\" gs-id=\"1688375280896\"><img width=\"35\" height=\"35\" src=\"https://cdn-icons-png.flaticon.com/512/2226/2226103.png\" alt=\"Pompa\" class=\"m-3\" data-qwik-inspector=\"routes/v2/index.tsx:88:23\"><div class=\"grow flex-1 pl-4\" data-qwik-inspector=\"routes/v2/index.tsx:95:23\">Pompa</div></div>"},{"w":3,"x":0,"y":4},{"w":3,"x":8,"y":4,"content":"\n                        <div class=\"bg-white shadow rounded flex w-[220px] items-center\" x-on:click=\"showDetail\" gs-id=\"1688526568795\">\n                          <img width=\"35\" height=\"35\" class=\"m-3\" src=\"https://cdn-icons-png.flaticon.com/512/148/148298.png\" alt=\"Katup\">\n                          <div class=\"grow flex-1 pl-4\">Katup</div>\n                        </div>\n                      "}],
+        grid: [
+          {
+            w: 3,
+            x: 9,
+            y: 0,
+            content:
+              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component" gs-id="1688532130825" x-on:click="showDetail">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor">\n                            <div class="grow flex-1 pl-4">Sensor</div>\n                          </div>\n                        ',
+          },
+          {
+            w: 3,
+            x: 4,
+            y: 1,
+            content:
+              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
+          },
+          {
+            w: 3,
+            x: 0,
+            y: 2,
+            content:
+              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369691777"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Tandon</div></div>',
+          },
+          {
+            w: 3,
+            x: 8,
+            y: 2,
+            content:
+              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
+          },
+          {
+            w: 3,
+            x: 4,
+            y: 3,
+            content:
+              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:87:21" gs-id="1688375280896"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:88:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:95:23">Pompa</div></div>',
+          },
+          { w: 3, x: 0, y: 4 },
+          {
+            w: 3,
+            x: 8,
+            y: 4,
+            content:
+              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
+          },
+        ],
         line: [
           {
             from: "1688369691777",
@@ -165,39 +247,43 @@
         ],
       };
 
-      document.addEventListener('alpine:init', () => {
-        Alpine.data('state', () => ({
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("state", () => ({
           components: [
             {
-              name: 'Tandon',
-              image: 'https://cdn-icons-png.flaticon.com/512/2399/2399504.png',
+              name: "Tandon",
+              image: "https://cdn-icons-png.flaticon.com/512/2399/2399504.png",
             },
             {
-              name: 'Pompa',
-              image: 'https://cdn-icons-png.flaticon.com/512/2226/2226103.png',
+              name: "Pompa",
+              image: "https://cdn-icons-png.flaticon.com/512/2226/2226103.png",
             },
             {
-              name: 'Katup',
-              image: 'https://cdn-icons-png.flaticon.com/512/148/148298.png',
+              name: "Katup",
+              image: "https://cdn-icons-png.flaticon.com/512/148/148298.png",
             },
             {
-              name: 'Sensor',
-              image: 'https://cdn-icons-png.flaticon.com/512/6375/6375838.png',
+              name: "Sensor",
+              image: "https://cdn-icons-png.flaticon.com/512/6375/6375838.png",
             },
           ],
           modalOpen: false,
           notifikasi: {
-            message: 'Berhasil',
+            message: "Berhasil",
             success: true,
             show: false,
           },
-          save() {
-            const data = grid.save();
+          async save() {
+            const data = window.grid.save();
+
+            await axios.post(apiURL, {
+              test: "OK",
+            });
 
             const text = JSON.stringify(data);
             navigator.clipboard.writeText(text);
 
-            this.notif('Perubahan berhasil disimpan')
+            this.notif("Perubahan berhasil disimpan");
           },
           showDetail(e) {
             console.log(e.currentTarget);
@@ -210,29 +296,33 @@
             setTimeout(() => {
               this.notifikasi.show = false;
             }, 3000);
-          }
-        }))
-      })
-
-      window.grid = GridStack.init({
-        float: true,
-        acceptWidgets: true,
-        removable: "#trash",
-        disableResize: true,
-        column: 12,
+          },
+        }));
       });
 
-      window.grid.load(data.grid);
-      
-      window.grid.on("added remove change", function () {
-        window.lines.forEach((item) => {
-          item.position();
+      async function init() {
+        window.grid = GridStack.init({
+          float: true,
+          acceptWidgets: true,
+          removable: "#trash",
+          disableResize: true,
+          column: 12,
         });
-      });
 
-      data.line.forEach((item) => {
-        makeLine(item);
-      });
+        window.grid.load(data.grid);
+
+        window.grid.on("added remove change", function () {
+          window.lines.forEach((item) => {
+            item.position();
+          });
+        });
+
+        data.line.forEach((item) => {
+          makeLine(item);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
 
       function makeLine({ from, to }) {
         line = new LeaderLine(
@@ -247,15 +337,15 @@
         window.lines.push(line);
 
         window.lines.forEach((item, index) => {
-          const el = document.querySelectorAll('.leader-line')[index];
-          el.setAttribute('l-id', item._id);
-          el.setAttribute('l-index', index);
-          el.addEventListener('click', () => {
-            const lId = el.getAttribute('l-index');
+          const el = document.querySelectorAll(".leader-line")[index];
+          el.setAttribute("l-id", item._id);
+          el.setAttribute("l-index", index);
+          el.addEventListener("click", () => {
+            const lId = el.getAttribute("l-index");
             delete window.lines[lId];
             el.remove();
-          })
-        })
+          });
+        });
       }
 
       setTimeout(() => {
@@ -264,18 +354,18 @@
           helper: (event) => {
             const id = Date.now();
             let target = event.target.parentElement;
-  
+
             if (target.classList.contains("grid-stack-item-content")) {
               target = target.children[0];
             }
-  
+
             target.setAttribute("gs-id", id);
-            target.setAttribute('x-on:click', 'showDetail');
-  
+            target.setAttribute("x-on:click", "showDetail");
+
             target.children[0].removeAttribute("x-bind:src");
             target.children[0].removeAttribute("x-bind:alt");
             target.children[1].removeAttribute("x-html");
-  
+
             const clone = target.cloneNode(true);
             return clone;
           },
