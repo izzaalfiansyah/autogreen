@@ -17,7 +17,7 @@
   </head>
   <body>
     <div id="app" x-data="state">
-      <div class="min-h-screen bg-gray-50 flex flex-col">
+      <div class="min-h-screen bg-[#fdfdfd] flex flex-col">
         <div
           class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]"
         >
@@ -37,15 +37,16 @@
         </div>
         <div class="grow diagram flex flex-col">
           <div class="p-5 relative">
-            <div class="flex">
+            <div class="flex sticky">
               <div class="w-auto">
-                <div class="bg-white rounded-lg shadow h-full p-5">
-                  <template x-for="item in components">
-                    <div class="mb-4">
+                <div class="bg-white rounded-lg shadow p-5 sticky top-[100px]">
+                  <template x-for="(item, index) in components">
+                    <div class="mb-4 dont-click">
                       <div class="grid-stack-item node-component">
                         <div class="grid-stack-item-content">
                           <div
-                            class="bg-white shadow rounded flex w-[220px] items-center drag-component"
+                            class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4"
+                            x-bind:class="['border-red-500', 'border-purple-500', 'border-yellow-500', 'border-green-500'][index]"
                             x-on:click="$event.preventDefault()"
                           >
                             <img
@@ -171,48 +172,102 @@
           </div>
         </div>
       </div>
+      <div
+        class="fixed bottom-10 right-10 bg-white rounded py-2 px-5 shadow flex space-x-2"
+      >
+        <button
+          class="rounded p-2 border"
+          x-bind:class="mode == 'move' ? 'bg-green-500 text-white' : ''"
+          x-on:click="mode = 'move'"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59"
+            />
+          </svg>
+        </button>
+        <button
+          class="rounded p-2 border"
+          x-bind:class="mode == 'link' ? 'bg-green-500 text-white' : ''"
+          x-on:click="mode = 'link'"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="rounded-full bg-white p-[1px] fixed pointer-events-none"
+        id="before-link-component"
+      ></div>
     </div>
     <script>
-      window.grid = {};
+      window.data_grid = [];
+      window.data_line = [];
+
       window.lines = [];
+      window.lineBefore = null;
+      window.lineTargetBefore = null;
+
       window.apiURL =
         "https://aigreen-default-rtdb.asia-southeast1.firebasedatabase.app";
+
       const data = {
         grid: [
           {
             w: 3,
-            x: 9,
+            x: 8,
             y: 0,
             content:
-              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component" gs-id="1688532130825" x-on:click="showDetail">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor">\n                            <div class="grow flex-1 pl-4">Sensor</div>\n                          </div>\n                        ',
+              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4 border-green-500" gs-id="1688532130825" x-on:click="mode == \'move\' ? showDetail : beforeLink">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor">\n                            <div class="grow flex-1 pl-4">Sensor</div>\n                          </div>\n                        ',
           },
           {
             w: 3,
             x: 4,
             y: 1,
             content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
+              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-purple-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
           },
           {
             w: 3,
             x: 0,
             y: 2,
             content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369691777"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Tandon</div></div>',
+              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-red-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369691777"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Tandon</div></div>',
           },
           {
             w: 3,
             x: 8,
             y: 2,
             content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
+              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
           },
           {
             w: 3,
             x: 4,
             y: 3,
             content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" data-qwik-inspector="routes/v2/index.tsx:87:21" gs-id="1688375280896"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:88:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:95:23">Pompa</div></div>',
+              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-purple-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:87:21" gs-id="1688375280896"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:88:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:95:23">Pompa</div></div>',
           },
           { w: 3, x: 0, y: 4 },
           {
@@ -220,35 +275,21 @@
             x: 8,
             y: 4,
             content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center" x-on:click="showDetail" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
+              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
           },
         ],
         line: [
-          {
-            from: "1688369691777",
-            to: "1688369699702",
-          },
-          {
-            from: "1688369691777",
-            to: "1688375280896",
-          },
-          {
-            from: "1688375280896",
-            to: "1688526459262",
-          },
-          {
-            from: "1688369699702",
-            to: "1688526459262",
-          },
-          {
-            from: "1688375280896",
-            to: "1688526568795",
-          },
+          { from: "1688369691777", to: "1688369699702" },
+          { from: "1688369691777", to: "1688375280896" },
+          { from: "1688375280896", to: "1688526459262" },
+          { from: "1688375280896", to: "1688526568795" },
+          { from: "1688369699702", to: "1688526459262" },
         ],
       };
 
       document.addEventListener("alpine:init", () => {
         Alpine.data("state", () => ({
+          mode: "move",
           components: [
             {
               name: "Tandon",
@@ -274,11 +315,13 @@
             show: false,
           },
           async save() {
-            const data = window.grid.save();
+            const data_grid = window.data_grid.save();
+            const data_line = window.data_line;
 
-            await axios.post(apiURL, {
-              test: "OK",
-            });
+            const data = {
+              grid: data_grid,
+              line: data_line,
+            };
 
             const text = JSON.stringify(data);
             navigator.clipboard.writeText(text);
@@ -287,21 +330,60 @@
           },
           showDetail(e) {
             console.log(e.currentTarget);
+            if (
+              e.currentTarget.parentElement.parentElement.parentElement.classList.contains(
+                "dont-click"
+              )
+            ) {
+              return null;
+            }
             this.modalOpen = true;
           },
           notif(message, success = true) {
             this.notifikasi.message = message;
-            this.notifikasi.success = true;
+            this.notifikasi.success = success;
             this.notifikasi.show = true;
             setTimeout(() => {
               this.notifikasi.show = false;
             }, 3000);
           },
+          beforeLink(e) {
+            const target = e.currentTarget;
+            const component = document.querySelector("#before-link-component");
+
+            if (window.lineTargetBefore == target) {
+              this.notif("target penghubung tidak valid", false);
+            } else {
+              if (window.lineBefore) {
+                this.deleteLastLine();
+
+                makeLine({
+                  from: window.lineTargetBefore.getAttribute("gs-id"),
+                  to: target.getAttribute("gs-id"),
+                });
+
+                window.lineBefore = null;
+                window.lineTargetBefore = null;
+
+                this.mode = "move";
+              } else {
+                window.lineTargetBefore = target;
+                window.lineBefore = new LeaderLine(target, component, {
+                  size: 2,
+                });
+              }
+            }
+          },
+          deleteLastLine() {
+            const lines = document.querySelectorAll(".leader-line");
+            const lastLine = lines[lines.length - 1];
+            lastLine.remove();
+          },
         }));
       });
 
       async function init() {
-        window.grid = GridStack.init({
+        window.data_grid = GridStack.init({
           float: true,
           acceptWidgets: true,
           removable: "#trash",
@@ -309,9 +391,9 @@
           column: 12,
         });
 
-        window.grid.load(data.grid);
+        window.data_grid.load(data.grid);
 
-        window.grid.on("added remove change", function () {
+        window.data_grid.on("added remove change", function () {
           window.lines.forEach((item) => {
             item.position();
           });
@@ -329,11 +411,15 @@
           document.querySelector(`[gs-id='${from}']`),
           document.querySelector(`[gs-id='${to}']`),
           {
-            color: "#111b21",
+            color: "cyan",
             size: 1.5,
           }
         );
 
+        window.data_line.push({
+          from,
+          to,
+        });
         window.lines.push(line);
 
         window.lines.forEach((item, index) => {
@@ -342,7 +428,10 @@
           el.setAttribute("l-index", index);
           el.addEventListener("click", () => {
             const lId = el.getAttribute("l-index");
-            delete window.lines[lId];
+
+            window.lines = window.lines.filter((item) => item._id != lId);
+            window.data_line = window.data_line.filter((item, i) => i != index);
+
             el.remove();
           });
         });
@@ -361,6 +450,7 @@
 
             target.setAttribute("gs-id", id);
             target.setAttribute("x-on:click", "showDetail");
+            target.removeAttribute("x-bind:class");
 
             target.children[0].removeAttribute("x-bind:src");
             target.children[0].removeAttribute("x-bind:alt");
@@ -371,6 +461,17 @@
           },
         });
       }, 400);
+
+      document.addEventListener("mousemove", (e) => {
+        const component = document.querySelector("#before-link-component");
+
+        component.style.top = e.y + "px";
+        component.style.left = e.x + "px";
+
+        if (window.lineBefore) {
+          window.lineBefore.position();
+        }
+      });
     </script>
   </body>
 </html>
