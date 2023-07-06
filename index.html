@@ -236,14 +236,14 @@
         grid: [
           {
             w: 3,
-            x: 8,
+            x: 9,
             y: 0,
             content:
               '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4 border-green-500" gs-id="1688532130825" x-on:click="mode == \'move\' ? showDetail : beforeLink">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor">\n                            <div class="grow flex-1 pl-4">Sensor</div>\n                          </div>\n                        ',
           },
           {
             w: 3,
-            x: 4,
+            x: 5,
             y: 1,
             content:
               '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-purple-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
@@ -257,7 +257,7 @@
           },
           {
             w: 3,
-            x: 8,
+            x: 9,
             y: 2,
             content:
               '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
@@ -272,7 +272,7 @@
           { w: 3, x: 0, y: 4 },
           {
             w: 3,
-            x: 8,
+            x: 9,
             y: 4,
             content:
               '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
@@ -281,9 +281,9 @@
         line: [
           { from: "1688369691777", to: "1688369699702" },
           { from: "1688369691777", to: "1688375280896" },
-          { from: "1688375280896", to: "1688526459262" },
           { from: "1688375280896", to: "1688526568795" },
           { from: "1688369699702", to: "1688526459262" },
+          { from: "1688375280896", to: "1688526459262" },
         ],
       };
 
@@ -320,7 +320,7 @@
 
             const data = {
               grid: data_grid,
-              line: data_line,
+              line: data_line.filter((item) => item != null),
             };
 
             const text = JSON.stringify(data);
@@ -388,7 +388,6 @@
           acceptWidgets: true,
           removable: "#trash",
           disableResize: true,
-          column: 12,
         });
 
         window.data_grid.load(data.grid);
@@ -416,10 +415,7 @@
           }
         );
 
-        window.data_line.push({
-          from,
-          to,
-        });
+        window.data_line.push({ from, to });
         window.lines.push(line);
 
         window.lines.forEach((item, index) => {
@@ -429,8 +425,8 @@
           el.addEventListener("click", () => {
             const lId = el.getAttribute("l-index");
 
-            window.lines = window.lines.filter((item) => item._id != lId);
-            window.data_line = window.data_line.filter((item, i) => i != index);
+            delete window.lines[lId];
+            delete window.data_line[lId];
 
             el.remove();
           });
