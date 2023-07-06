@@ -16,16 +16,13 @@
   cursor: pointer;
 }
 
-svg.leader-line {
-  pointer-events: auto!important;
-}
-
-.leader-line {
+.leader-line g {
   z-index: 400 !important;
   cursor: no-drop !important;
+  pointer-events: auto;
 }
 
-.leader-line:hover g > use:first-of-type {
+.leader-line g:hover > use:first-of-type {
   stroke: yellow !important;
 }
 

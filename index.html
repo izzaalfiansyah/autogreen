@@ -41,7 +41,7 @@
               <div class="w-auto">
                 <div class="bg-white rounded-lg shadow p-5 sticky top-[100px]">
                   <template x-for="(item, index) in components">
-                    <div class="mb-4 dont-click">
+                    <div class="mb-4 main-component">
                       <div class="grid-stack-item node-component">
                         <div class="grid-stack-item-content">
                           <div
@@ -267,7 +267,7 @@
             x: 0,
             y: 2,
             content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-red-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369691777"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Tandon</div></div>',
+              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4 border-red-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688656447275">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon">\n                            <div class="grow flex-1 pl-4">Tandon</div>\n                          </div>\n                        ',
           },
           {
             w: 3,
@@ -293,11 +293,11 @@
           },
         ],
         line: [
-          { from: "1688369691777", to: "1688369699702" },
-          { from: "1688369691777", to: "1688375280896" },
-          { from: "1688375280896", to: "1688526568795" },
-          { from: "1688369699702", to: "1688526459262" },
-          { from: "1688375280896", to: "1688526459262" },
+          { id: 1, from: "1688375280896", to: "1688526459262" },
+          { id: 2, from: "1688369699702", to: "1688526459262" },
+          { id: 3, from: "1688375280896", to: "1688526568795" },
+          { id: 4, from: "1688656447275", to: "1688375280896" },
+          { id: 7, from: "1688656447275", to: "1688369699702" },
         ],
       };
 
@@ -343,6 +343,8 @@
               line: data_line,
             };
 
+            await axios.post(apiURL, data);
+
             const text = JSON.stringify(data);
             navigator.clipboard.writeText(text);
 
@@ -352,7 +354,7 @@
             console.log(e.currentTarget);
             if (
               e.currentTarget.parentElement.parentElement.parentElement.classList.contains(
-                "dont-click"
+                "main-component"
               )
             ) {
               return null;
@@ -389,7 +391,7 @@
               } else {
                 window.lineTargetBefore = target;
                 window.lineBefore = new LeaderLine(target, component, {
-                  size: 2,
+                  size: 3,
                   color: "gold",
                 });
               }
@@ -413,11 +415,41 @@
 
         window.data_grid.load(data.grid);
 
-        window.data_grid.on("added remove change", function () {
+        window.data_grid.on("added change", function () {
+          document
+            .querySelectorAll(".main-component .drag-component")
+            .forEach((item) => {
+              item.removeAttribute("x-on:click");
+              item.removeAttribute("gs-id");
+            });
+
           window.lines.forEach((item) => {
             item.position();
           });
         });
+
+        // window.data_grid.on("removed", function (e, items) {
+        //   const lines = document.querySelectorAll(".leader-line");
+
+        //   const div = document.createElement("div");
+        //   div.innerHTML = items[0].content;
+        //   console.log(e);
+        //   gsId = div.children[0].getAttribute("gs-id");
+
+        //   window.data_line.forEach((item, index) => {
+        //     if (item.from == gsId || item.to == gsId) {
+        //       window.lines[index].remove();
+        //       lines[index].remove();
+
+        //       window.lines = window.lines.filter((item, i) => i != index);
+        //       window.data_line = window.data_line.filter(
+        //         (item, i) => i != index
+        //       );
+
+        //       console.log(window.lines);
+        //     }
+        //   });
+        // });
 
         data.line.forEach((item) => {
           makeLine(item);
@@ -432,11 +464,11 @@
           document.querySelector(`[gs-id='${to}']`),
           {
             color: "cyan",
-            size: 2,
+            size: 3,
           }
         );
 
-        window.data_line.push({ from, to });
+        window.data_line.push({ id: line._id, from, to });
         window.lines.push(line);
 
         window.lines.forEach((item, index) => {
@@ -444,17 +476,15 @@
 
           if (el) {
             el.setAttribute("l-id", item._id);
-            el.setAttribute("l-index", index);
-            el.addEventListener("click", () => {
-              const lId = el.getAttribute("l-index");
+            el.children[1].addEventListener("click", () => {
+              const lId = el.getAttribute("l-id");
 
-              delete window.lines[lId];
-              delete window.data_line[lId];
-
-              window.lines = window.lines.filter((item) => item != null);
+              window.lines = window.lines.filter((item) => item._id != lId);
               window.data_line = window.data_line.filter(
-                (item) => item != null
+                (item) => item.id != lId
               );
+
+              console.log(window.data_line);
 
               el.remove();
             });
@@ -474,7 +504,10 @@
             }
 
             target.setAttribute("gs-id", id);
-            target.setAttribute("x-on:click", "showDetail");
+            target.setAttribute(
+              "x-on:click",
+              "mode == 'move' ? showDetail : beforeLink"
+            );
             target.removeAttribute("x-bind:class");
 
             target.children[0].removeAttribute("x-bind:src");
@@ -482,6 +515,7 @@
             target.children[1].removeAttribute("x-html");
 
             const clone = target.cloneNode(true);
+
             return clone;
           },
         });
