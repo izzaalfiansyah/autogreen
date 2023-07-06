@@ -220,6 +220,20 @@
         class="rounded-full bg-white p-[1px] fixed pointer-events-none"
         id="before-link-component"
       ></div>
+      <div
+        class="fixed top-0 left-0 right-0 z-[1000] bg-white bottom-0 flex items-center justify-center space-x-5"
+        x-bind:class="isLoading ? '' : 'hidden'"
+      >
+        <div
+          class="flex space-x-5 justify-center items-center animate animate-pulse"
+        >
+          <div class="bg-green-500 rounded-full p-3"></div>
+          <div class="bg-green-500 rounded-full p-3"></div>
+          <div class="bg-green-500 rounded-full p-5"></div>
+          <div class="bg-green-500 rounded-full p-3"></div>
+          <div class="bg-green-500 rounded-full p-3"></div>
+        </div>
+      </div>
     </div>
     <script>
       window.data_grid = [];
@@ -289,6 +303,11 @@
 
       document.addEventListener("alpine:init", () => {
         Alpine.data("state", () => ({
+          init() {
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
+          },
           mode: "move",
           components: [
             {
@@ -314,6 +333,7 @@
             success: true,
             show: false,
           },
+          isLoading: true,
           async save() {
             const data_grid = window.data_grid.save();
             const data_line = window.data_line;
@@ -412,7 +432,7 @@
           document.querySelector(`[gs-id='${to}']`),
           {
             color: "cyan",
-            size: 1.5,
+            size: 2,
           }
         );
 
