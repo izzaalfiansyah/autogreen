@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Monitoring IntelliGreenhouse</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="node_modules/alpinejs/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="min-h-screen bg-[#fdfdfd] flex flex-col diagram">
+        <div
+          class="flex h-20 items-center justify-between bg-white shadow-sm lg:px-10 px-5 sticky top-0 left-0 right-0 z-[500]"
+        >
+          <div>
+            <span class="font-semibold text-lg">
+              <span class="text-green-500">Intelli</span>Greenhouse
+            </span>
+          </div>
+
+          <div class="flex items-center justify-end space-x-4">
+            <div
+              class="relative"
+              x-data="{
+            open: false,
+            toggle() {
+              this.open = !this.open
+            }
+          }"
+            >
+              <button
+                class="border p-2 rounded border-gray-200 shadow"
+                x-on:click="toggle"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
+                  />
+                </svg>
+              </button>
+              <div
+                class="absolute bottom-0 right-0 pt-2 transform translate-y-full w-[200px]"
+                x-bind:class="open ? '' : 'hidden'"
+              >
+                <ul class="bg-white shadow rounded">
+                  <li>
+                    <a
+                      href="/"
+                      class="px-4 py-2 block w-full transition hover:bg-gray-100"
+                      >Skema Diagram</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/decision.html"
+                      class="px-4 py-2 block w-full transition hover:bg-gray-100"
+                      >Decision Status</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:px-[200px] p-5">
+          <div class="mb-5 bg-white rounded p-5 shadow">
+            <div class="mb-3">
+              <label for="">Suhu Rata-rata</label>
+              <input
+                type="text"
+                class="w-full rounded p-2 5 border border-gray-200 outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="">Kelembaban Rata-rata</label>
+              <input
+                type="text"
+                class="w-full rounded p-2 5 border border-gray-200 outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-5">
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Kipas 1
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-green-500 rounded-full px-3 p-1 text-xs text-white"
+                      >On</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Kipas 2
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-green-500 rounded-full px-3 p-1 text-xs text-white"
+                      >On</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Kipas 3
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-green-500 rounded-full px-3 p-1 text-xs text-white"
+                      >On</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Misting
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-red-500 rounded-full px-3 p-1 text-xs text-white"
+                      >Off</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Roller Motor
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-red-500 rounded-full px-3 p-1 text-xs text-white"
+                      >Off</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+              <table class="border w-full border-gray-200 border-collapse">
+                <tr>
+                  <td class="p-3 border border-gray-200" colspan="2">
+                    Cooling Pad
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 border border-gray-200">Decision</td>
+                  <td class="p-3 border border-gray-200 text-center">
+                    <span
+                      class="bg-green-500 rounded-full px-3 p-1 text-xs text-white"
+                      >On</span
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
