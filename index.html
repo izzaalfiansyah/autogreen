@@ -27,13 +27,72 @@
             </span>
           </div>
 
-          <button
-            type="button"
-            class="bg-green-500 text-white px-5 p-2 rounded shadow"
-            x-on:click="await save"
-          >
-            Simpan
-          </button>
+          <div class="flex items-center justify-end space-x-4">
+            <button
+              type="button"
+              class="bg-green-500 text-white px-5 p-2 rounded shadow"
+              x-on:click="await save"
+            >
+              Simpan
+            </button>
+            <div
+              class="relative"
+              x-data="{
+              open: false,
+              toggle() {
+                this.open = !this.open
+              }
+            }"
+            >
+              <button
+                class="border p-2 rounded border-gray-200 shadow"
+                x-on:click="toggle"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
+                  />
+                </svg>
+              </button>
+              <div
+                class="absolute bottom-0 right-0 pt-2 transform translate-y-full w-[200px]"
+                x-bind:class="open ? '' : 'hidden'"
+              >
+                <ul class="bg-white shadow rounded">
+                  <li>
+                    <a
+                      href="/"
+                      class="px-4 py-2 block w-full transition hover:bg-gray-100"
+                      >Skema Diagram</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/decision.html"
+                      class="px-4 py-2 block w-full transition hover:bg-gray-100"
+                      >Decision Status</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pengaturan.html"
+                      class="px-4 py-2 block w-full transition hover:bg-gray-100"
+                      >Pengaturan</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="grow diagram flex flex-col">
           <div class="p-5 relative">
@@ -220,6 +279,17 @@
         class="rounded-full bg-white p-[1px] fixed pointer-events-none"
         id="before-link-component"
       ></div>
+    </div>
+    <div
+      x-data="{
+      init() {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
+      },
+      isLoading: true,
+    }"
+    >
       <div
         class="fixed top-0 left-0 right-0 z-[1000] bg-white bottom-0 flex items-center justify-center space-x-5"
         x-bind:class="isLoading ? '' : 'hidden'"
@@ -303,11 +373,6 @@
 
       document.addEventListener("alpine:init", () => {
         Alpine.data("state", () => ({
-          init() {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-          },
           mode: "move",
           components: [
             {
@@ -333,7 +398,6 @@
             success: true,
             show: false,
           },
-          isLoading: true,
           async save() {
             const data_grid = window.data_grid.save();
             const data_line = window.data_line;
@@ -343,7 +407,7 @@
               line: data_line,
             };
 
-            await axios.post(apiURL, data);
+            // await axios.post(apiURL, data);
 
             const text = JSON.stringify(data);
             navigator.clipboard.writeText(text);
