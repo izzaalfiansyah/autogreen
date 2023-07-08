@@ -306,64 +306,6 @@
       window.lineBefore = null;
       window.lineTargetBefore = null;
 
-      window.apiURL =
-        "https://aigreen-default-rtdb.asia-southeast1.firebasedatabase.app";
-
-      const data = {
-        grid: [
-          {
-            w: 3,
-            x: 9,
-            y: 0,
-            content:
-              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4 border-green-500" gs-id="1688532130825" x-on:click="mode == \'move\' ? showDetail : beforeLink">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/6375/6375838.png" alt="Sensor">\n                            <div class="grow flex-1 pl-4">Sensor</div>\n                          </div>\n                        ',
-          },
-          {
-            w: 3,
-            x: 5,
-            y: 1,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-purple-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:140:21" gs-id="1688369699702"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:141:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:148:23">Pompa</div></div>',
-          },
-          {
-            w: 3,
-            x: 0,
-            y: 2,
-            content:
-              '\n                          <div class="bg-white shadow rounded flex w-[220px] items-center drag-component border-l-4 border-red-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688656447275">\n                            <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/2399/2399504.png" alt="Tandon">\n                            <div class="grow flex-1 pl-4">Tandon</div>\n                          </div>\n                        ',
-          },
-          {
-            w: 3,
-            x: 9,
-            y: 2,
-            content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526459262">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
-          },
-          {
-            w: 3,
-            x: 4,
-            y: 3,
-            content:
-              '<div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-purple-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" data-qwik-inspector="routes/v2/index.tsx:87:21" gs-id="1688375280896"><img width="35" height="35" src="https://cdn-icons-png.flaticon.com/512/2226/2226103.png" alt="Pompa" class="m-3" data-qwik-inspector="routes/v2/index.tsx:88:23"><div class="grow flex-1 pl-4" data-qwik-inspector="routes/v2/index.tsx:95:23">Pompa</div></div>',
-          },
-          { w: 3, x: 0, y: 4 },
-          {
-            w: 3,
-            x: 9,
-            y: 4,
-            content:
-              '\n                        <div class="bg-white shadow rounded flex w-[220px] items-center border-l-4 border-yellow-500" x-on:click="mode == \'move\' ? showDetail : beforeLink" gs-id="1688526568795">\n                          <img width="35" height="35" class="m-3" src="https://cdn-icons-png.flaticon.com/512/148/148298.png" alt="Katup">\n                          <div class="grow flex-1 pl-4">Katup</div>\n                        </div>\n                      ',
-          },
-        ],
-        line: [
-          { id: 1, from: "1688375280896", to: "1688526459262" },
-          { id: 2, from: "1688369699702", to: "1688526459262" },
-          { id: 3, from: "1688375280896", to: "1688526568795" },
-          { id: 4, from: "1688656447275", to: "1688375280896" },
-          { id: 7, from: "1688656447275", to: "1688369699702" },
-        ],
-      };
-
       document.addEventListener("alpine:init", () => {
         Alpine.data("state", () => ({
           mode: "move",
@@ -400,7 +342,7 @@
               line: data_line,
             };
 
-            // await axios.post(apiURL, data);
+            await axios.post("./api/skema.php?create=1", data);
 
             const text = JSON.stringify(data);
             navigator.clipboard.writeText(text);
@@ -463,6 +405,8 @@
       });
 
       async function init() {
+        const res = await axios.get("./api/skema.php");
+
         window.data_grid = GridStack.init({
           float: true,
           acceptWidgets: true,
@@ -470,7 +414,7 @@
           disableResize: true,
         });
 
-        window.data_grid.load(data.grid);
+        window.data_grid.load(res.data.data.grid);
 
         window.data_grid.on("added change", function () {
           document
@@ -508,7 +452,7 @@
         //   });
         // });
 
-        data.line.forEach((item) => {
+        res.data.data.line.forEach((item) => {
           makeLine(item);
         });
       }
@@ -563,7 +507,7 @@
             target.setAttribute("gs-id", id);
             target.setAttribute(
               "x-on:click",
-              "mode == 'move' ? showDetail : beforeLink"
+              "mode == `move` ? showDetail : beforeLink"
             );
             target.removeAttribute("x-bind:class");
 
