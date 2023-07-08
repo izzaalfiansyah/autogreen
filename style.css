@@ -29,3 +29,7 @@
 .grid-stack .grid-stack-item-content:hover > * {
   background: lightyellow;
 }
+
+.grid-stack-item-content {
+  height: auto !important;
+}
