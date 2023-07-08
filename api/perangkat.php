@@ -35,16 +35,10 @@ $sample = [
   ],
   [
     'gsId' => '1688532130825',
-    'status' => 0,
-    'flow' => '3m/s',
-    'temperatur' => '30',
-  ],
-  [
-    'gsId' => '1688811101347',
     'status' => 1,
     'flow' => '3m/s',
     'temperatur' => '30',
-  ]
+  ],
 ];
 
 if (isset($_GET['create'])) {

@@ -386,23 +386,25 @@
                 `[gs-id="${item.gsId}"]`
               );
 
-              perangkat.setAttribute("gs-status", item.status);
-              perangkat.setAttribute("gs-flow", item.flow);
-              perangkat.setAttribute("gs-temperatur", item.temperatur);
+              if (perangkat) {
+                perangkat.setAttribute("gs-status", item.status);
+                perangkat.setAttribute("gs-flow", item.flow);
+                perangkat.setAttribute("gs-temperatur", item.temperatur);
 
-              perangkat.classList.remove("border-green-500");
-              perangkat.classList.remove("border-red-500");
-              perangkat.classList.remove("text-green-500");
-              perangkat.classList.remove("text-red-500");
-              perangkat.classList.add(
-                item.status == "1" ? "border-green-500" : "border-red-500"
-              );
-              perangkat.classList.add(
-                item.status == "1" ? "text-green-500" : "text-red-500"
-              );
+                perangkat.classList.remove("border-green-500");
+                perangkat.classList.remove("border-red-500");
+                perangkat.classList.remove("text-green-500");
+                perangkat.classList.remove("text-red-500");
+                perangkat.classList.add(
+                  item.status == "1" ? "border-green-500" : "border-red-500"
+                );
+                perangkat.classList.add(
+                  item.status == "1" ? "text-green-500" : "text-red-500"
+                );
 
-              if (item.status != "1") {
-                stoppedDeviceId.push(item.gsId);
+                if (item.status != "1") {
+                  stoppedDeviceId.push(item.gsId);
+                }
               }
             });
 
@@ -526,29 +528,6 @@
           });
         });
 
-        // window.data_grid.on("removed", function (e, items) {
-        //   const lines = document.querySelectorAll(".leader-line");
-
-        //   const div = document.createElement("div");
-        //   div.innerHTML = items[0].content;
-        //   console.log(e);
-        //   gsId = div.children[0].getAttribute("gs-id");
-
-        //   window.data_line.forEach((item, index) => {
-        //     if (item.from == gsId || item.to == gsId) {
-        //       window.lines[index].remove();
-        //       lines[index].remove();
-
-        //       window.lines = window.lines.filter((item, i) => i != index);
-        //       window.data_line = window.data_line.filter(
-        //         (item, i) => i != index
-        //       );
-
-        //       console.log(window.lines);
-        //     }
-        //   });
-        // });
-
         res.data.data.line.forEach((item) => {
           makeLine(item);
         });
@@ -577,12 +556,17 @@
             el.children[1].addEventListener("click", () => {
               const lId = el.getAttribute("l-id");
 
-              window.lines = window.lines.filter((item) => item._id != lId);
+              window.lines = window.lines.filter((item) => {
+                if (item._id != lId) {
+                  return true;
+                } else {
+                  item.remove();
+                  return false;
+                }
+              });
               window.data_line = window.data_line.filter(
                 (item) => item.id != lId
               );
-
-              console.log(window.data_line);
 
               el.remove();
             });
