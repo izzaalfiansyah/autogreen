@@ -107,10 +107,7 @@
                               height="35"
                               class="m-3"
                             />
-                            <div
-                              class="grow flex-1 pl-4"
-                              x-html="item.name"
-                            ></div>
+                            <div class="grow flex-1" x-html="item.name"></div>
                           </div>
                         </div>
                       </div>
@@ -174,7 +171,7 @@
             <input
               type="text"
               class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-              disabled
+              x-model="perangkat.id"
             />
           </div>
           <div class="mb-2">
@@ -182,13 +179,16 @@
             <input
               type="text"
               class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              x-model="perangkat.nama"
             />
           </div>
           <div class="mb-2">
             <label for="">Status</label>
             <select
               type="text"
-              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              x-model="perangkat.status"
+              disabled
             >
               <option value="1">Running</option>
               <option value="0">Stopped</option>
@@ -198,19 +198,24 @@
             <label for="">Flow</label>
             <input
               type="text"
-              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              x-model="perangkat.flow"
+              disabled
             />
           </div>
           <div class="mb-2">
             <label for="">Temperatur</label>
             <input
               type="text"
-              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              class="w-full rounded p-3 py-2 transition border border-gray-200 outline-none disabled:bg-gray-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
+              x-model="perangkat.temperatur"
+              disabled
             />
           </div>
           <div class="mt-5">
             <button
               class="border rounded outline-none px-4 p-2 bg-green-500 text-white"
+              x-on:click="await saveDetail"
             >
               Simpan
             </button>
@@ -320,7 +325,12 @@
       document.addEventListener("alpine:init", () => {
         Alpine.data("state", () => ({
           init() {
-            setInterval(this.updateDevice, 3000);
+            setTimeout(this.updateDevice, 800);
+            setInterval(() => {
+              if (!this.modalOpen) {
+                this.updateDevice();
+              }
+            }, 3000);
           },
           mode: "move",
           components: [
@@ -341,6 +351,14 @@
               image: "https://cdn-icons-png.flaticon.com/512/6375/6375838.png",
             },
           ],
+          perangkat: {
+            oldId: "",
+            id: "",
+            nama: "",
+            status: "",
+            flow: "",
+            temperatur: "",
+          },
           modalOpen: false,
           notifikasi: {
             message: "Berhasil",
@@ -368,9 +386,10 @@
 
             let stoppedDeviceId = [];
             res.data.data.forEach((item) => {
-              const perangkat = document.querySelector(`[gs-id="${item.id}"]`);
+              const perangkat = document.querySelector(
+                `[gs-id="${item.gsId}"]`
+              );
 
-              perangkat.setAttribute("gs-nama", item.nama);
               perangkat.setAttribute("gs-status", item.status);
               perangkat.setAttribute("gs-flow", item.flow);
               perangkat.setAttribute("gs-temperatur", item.temperatur);
@@ -387,7 +406,7 @@
               );
 
               if (item.status != "1") {
-                stoppedDeviceId.push(item.id);
+                stoppedDeviceId.push(item.gsId);
               }
             });
 
@@ -408,7 +427,6 @@
             });
           },
           showDetail(e) {
-            console.log(e.currentTarget);
             if (
               e.currentTarget.parentElement.parentElement.parentElement.classList.contains(
                 "main-component"
@@ -417,6 +435,31 @@
               return null;
             }
             this.modalOpen = true;
+            this.perangkat.oldId = e.currentTarget.getAttribute("gs-id");
+            this.perangkat.id = e.currentTarget.getAttribute("gs-id");
+            this.perangkat.nama = e.currentTarget.innerText;
+            this.perangkat.status = e.currentTarget.getAttribute("gs-status");
+            this.perangkat.flow = e.currentTarget.getAttribute("gs-flow");
+            this.perangkat.temperatur =
+              e.currentTarget.getAttribute("gs-temperatur");
+          },
+          async saveDetail(e) {
+            e.preventDefault();
+
+            await new Promise((res) => {
+              const device = document.querySelector(
+                `[gs-id="${this.perangkat.oldId}"]`
+              );
+              device.children[1].innerHTML = this.perangkat.nama;
+              device.setAttribute("gs-id", this.perangkat.id);
+
+              setTimeout(async () => {
+                await this.save();
+                res(true);
+              }, 200);
+            });
+
+            this.modalOpen = false;
           },
           notif(message, success = true) {
             this.notifikasi.message = message;
@@ -572,6 +615,11 @@
             target.children[0].removeAttribute("x-bind:src");
             target.children[0].removeAttribute("x-bind:alt");
             target.children[1].removeAttribute("x-html");
+
+            // const data = {
+            //   id: id,
+            //   nama: target.children[1].innerText,
+            // };
 
             const clone = target.cloneNode(true);
 

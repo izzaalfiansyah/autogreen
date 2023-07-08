@@ -1,51 +1,50 @@
 <?php
 
+require 'db.php';
+
 $sample = [
   [
-    'id' => '1688656447275',
-    'nama' => 'Tandon Pusat',
+    'gsId' => '1688656447275',
     'status' => 1,
     'flow' => '3m/s',
     'temperatur' => '30',
   ],
   [
-    'id' => '1688369699702',
-    'nama' => 'Pompa 1',
+    'gsId' => '1688369699702',
     'status' => 1,
     'flow' => '3m/s',
     'temperatur' => '30',
   ],
   [
-    'id' => '1688375280896',
-    'nama' => 'Pompa 2',
-    'status' => 1,
-    'flow' => '0m/s',
-    'temperatur' => '0',
-  ],
-  [
-    'id' => '1688526459262',
-    'nama' => 'Katup 1',
-    'status' => 1,
-    'flow' => '3m/s',
-    'temperatur' => '30',
-  ],
-  [
-    'id' => '1688526568795',
-    'nama' => 'Katup 2',
+    'gsId' => '1688375280896',
     'status' => 0,
     'flow' => '0m/s',
     'temperatur' => '0',
   ],
   [
-    'id' => '1688532130825',
-    'nama' => 'Sensor',
+    'gsId' => '1688526459262',
     'status' => 1,
+    'flow' => '3m/s',
+    'temperatur' => '30',
+  ],
+  [
+    'gsId' => '1688526568795',
+    'status' => 0,
+    'flow' => '0m/s',
+    'temperatur' => '0',
+  ],
+  [
+    'gsId' => '1688532130825',
+    'status' => 0,
     'flow' => '3m/s',
     'temperatur' => '30',
   ]
 ];
 
-echo json_encode([
-  'success' => true,
-  'data' => $sample,
-]);
+if (isset($_GET['create'])) {
+} else {
+  echo json_encode([
+    'success' => true,
+    'data' => $sample,
+  ]);
+}
