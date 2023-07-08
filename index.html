@@ -375,10 +375,6 @@
             };
 
             await axios.post("./api/skema.php?create=1", data);
-
-            const text = JSON.stringify(data);
-            navigator.clipboard.writeText(text);
-
             this.notif("Perubahan berhasil disimpan");
           },
           async updateDevice() {
